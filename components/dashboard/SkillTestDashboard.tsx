@@ -26,16 +26,6 @@ interface ComparisonGraphProps {
   percentile: number;
   averagePercentile: number;
 }
-
-interface SyllabusAnalysisProps {
-  syllabusData: { name: string; percentage: number }[];
-}
-
-interface QuestionAnalysisProps {
-  correctAnswers: string;
-  totalQuestions: number;
-}
-
 // QuickStatistics component
 const QuickStatistics: React.FC<QuickStatisticsProps> = ({
   rank,
