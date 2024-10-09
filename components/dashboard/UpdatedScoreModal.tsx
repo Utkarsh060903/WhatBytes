@@ -10,13 +10,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-const UpdateScoresModal = ({ onUpdate }) => {
+// Define the props type
+type UpdateScoresModalProps = {
+  onUpdate: (data: { rank: string; percentile: string; currentScore: string }) => void;
+};
+
+const UpdateScoresModal: React.FC<UpdateScoresModalProps> = ({ onUpdate }) => {
   const [rank, setRank] = useState('');
   const [percentile, setPercentile] = useState('');
   const [currentScore, setCurrentScore] = useState('');
   const [open, setOpen] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onUpdate({ rank, percentile, currentScore });
     setOpen(false);
