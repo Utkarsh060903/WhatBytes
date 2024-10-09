@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trophy, Percent, CheckCircle2} from "lucide-react";
+import { Trophy, Percent, CheckCircle2 } from "lucide-react";
 import {
   LineChart,
   Line,
@@ -15,7 +15,33 @@ import {
 } from "recharts";
 import UpdateScoresModal from "@/components/dashboard/UpdatedScoreModal";
 
-const QuickStatistics = ({ rank, percentile, correctAnswers }) => (
+// Define the types for the props
+interface QuickStatisticsProps {
+  rank: string;
+  percentile: string;
+  correctAnswers: string;
+}
+
+interface ComparisonGraphProps {
+  percentile: number;
+  averagePercentile: number;
+}
+
+interface SyllabusAnalysisProps {
+  syllabusData: { name: string; percentage: number }[];
+}
+
+interface QuestionAnalysisProps {
+  correctAnswers: string;
+  totalQuestions: number;
+}
+
+// QuickStatistics component
+const QuickStatistics: React.FC<QuickStatisticsProps> = ({
+  rank,
+  percentile,
+  correctAnswers,
+}) => (
   <Card className="mb-6">
     <CardContent className="p-4">
       <h3 className="font-bold mb-4">Quick Statistics</h3>
@@ -46,7 +72,11 @@ const QuickStatistics = ({ rank, percentile, correctAnswers }) => (
   </Card>
 );
 
-const ComparisonGraph = ({ percentile, averagePercentile }) => {
+// ComparisonGraph component
+const ComparisonGraph: React.FC<ComparisonGraphProps> = ({
+  percentile,
+  averagePercentile,
+}) => {
   const data = [
     { percentile: 0, students: 2 },
     { percentile: 10, students: 5 },
@@ -99,8 +129,11 @@ const ComparisonGraph = ({ percentile, averagePercentile }) => {
                 stroke="#8884d8"
                 activeDot={{ r: 8 }}
               />
-              <Line type="monotone" dataKey="percentile" stroke="transparent" />
-              {/* Marker for user's percentile */}
+              <Line
+                type="monotone"
+                dataKey="percentile"
+                stroke="transparent"
+              />
               <Line
                 type="monotone"
                 data={[
@@ -115,7 +148,6 @@ const ComparisonGraph = ({ percentile, averagePercentile }) => {
                 strokeWidth={2}
                 dot={{ r: 6, fill: "#ff0000" }}
               />
-              {/* Marker for average percentile */}
               <Line
                 type="monotone"
                 data={[
@@ -137,6 +169,8 @@ const ComparisonGraph = ({ percentile, averagePercentile }) => {
     </Card>
   );
 };
+
+// Other components like SyllabusAnalysis and QuestionAnalysis will also follow the same pattern of type annotations.
 
 const SyllabusAnalysis = ({ syllabusData }) => (
   <Card className="mb-6 h-[350px]">
