@@ -15,7 +15,7 @@ import {
 } from "recharts";
 import UpdateScoresModal from "@/components/dashboard/UpdatedScoreModal";
 
-// Define the types for the props
+// Define interfaces for the component props and state
 interface QuickStatisticsProps {
   rank: string;
   percentile: string;
@@ -26,6 +26,33 @@ interface ComparisonGraphProps {
   percentile: number;
   averagePercentile: number;
 }
+
+interface SyllabusAnalysisProps {
+  syllabusData: Array<{
+    name: string;
+    percentage: number;
+  }>;
+}
+
+interface QuestionAnalysisProps {
+  correctAnswers: string;
+  totalQuestions: number;
+}
+
+interface SkillTestDashboardProps {
+  initialData?: {
+    rank?: string;
+    percentile?: string;
+    correctAnswers?: string;
+  };
+}
+
+interface DashboardData {
+  rank: string;
+  percentile: string;
+  correctAnswers: string;
+}
+
 // QuickStatistics component
 const QuickStatistics: React.FC<QuickStatisticsProps> = ({
   rank,
@@ -81,7 +108,7 @@ const ComparisonGraph: React.FC<ComparisonGraphProps> = ({
     { percentile: 100, students: 2 },
   ];
 
-  const CustomTooltip = ({ active, payload, label }) => {
+  const CustomTooltip: React.FC<any> = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-white p-2 border border-gray-300 rounded shadow">
@@ -160,9 +187,7 @@ const ComparisonGraph: React.FC<ComparisonGraphProps> = ({
   );
 };
 
-// Other components like SyllabusAnalysis and QuestionAnalysis will also follow the same pattern of type annotations.
-
-const SyllabusAnalysis = ({ syllabusData }) => (
+const SyllabusAnalysis: React.FC<SyllabusAnalysisProps> = ({ syllabusData }) => (
   <Card className="mb-6 h-[350px]">
     <CardContent className="p-4">
       <h3 className="font-bold mb-4">Syllabus Wise Analysis</h3>
@@ -204,7 +229,7 @@ const SyllabusAnalysis = ({ syllabusData }) => (
   </Card>
 );
 
-const QuestionAnalysis = ({ correctAnswers, totalQuestions }) => {
+const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({ correctAnswers, totalQuestions }) => {
   const [correctCount, totalCount] = correctAnswers.split("/").map(Number);
   const percentage = (correctCount / totalCount) * 100;
   const data = [
@@ -260,19 +285,19 @@ const QuestionAnalysis = ({ correctAnswers, totalQuestions }) => {
   );
 };
 
-export const SkillTestDashboard = ({ initialData = {} }) => {
-  const [data, setData] = useState({
+export const SkillTestDashboard: React.FC<SkillTestDashboardProps> = ({ initialData = {} }) => {
+  const [data, setData] = useState<DashboardData>({
     rank: initialData.rank || "1",
     percentile: initialData.percentile || "30",
     correctAnswers: initialData.correctAnswers || "10 / 15",
   });
 
-  const handleUpdate = (newData) => {
+  const handleUpdate = (newData: Partial<DashboardData>) => {
     setData((prevData) => ({
       ...prevData,
       rank: newData.rank || prevData.rank,
       percentile: newData.percentile || prevData.percentile,
-      correctAnswers: `${newData.currentScore || "10"} / 15`,
+      correctAnswers: `${newData.correctAnswers?.split('/')[0] || "10"} / 15`,
     }));
   };
 
@@ -284,7 +309,7 @@ export const SkillTestDashboard = ({ initialData = {} }) => {
   ];
 
   return (
-    <div className="p-4 sm:p-6 max-w-6xl mx-auto flex md:flex-row  flex-col overflow-y">
+    <div className="p-4 sm:p-6 max-w-6xl mx-auto flex md:flex-row flex-col overflow-y">
       <div className="flex-grow">
         <Card className="mb-6 w-[710px]">
           <CardHeader className="p-4">
@@ -320,17 +345,17 @@ export const SkillTestDashboard = ({ initialData = {} }) => {
             />
           </div>
         </div>
-        </div>
-        <div>
-          <div className="space-y-6">
-            <SyllabusAnalysis syllabusData={syllabusData} />
-            <QuestionAnalysis
-              correctAnswers={data.correctAnswers}
-              totalQuestions={15}
-            />
-          </div>
+      </div>
+      <div>
+        <div className="space-y-6">
+          <SyllabusAnalysis syllabusData={syllabusData} />
+          <QuestionAnalysis
+            correctAnswers={data.correctAnswers}
+            totalQuestions={15}
+          />
         </div>
       </div>
+    </div>
   );
 };
 
