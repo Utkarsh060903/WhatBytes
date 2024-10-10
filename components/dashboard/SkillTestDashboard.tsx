@@ -47,9 +47,9 @@ interface SkillTestDashboardProps {
 
 interface DashboardData {
   rank: string;
-  percentile: string;
+  percentile: string; 
   correctAnswers: string;
-  currentScore: number;
+  currentScore: string;
 }
 const QuickStatistics: React.FC<QuickStatisticsProps> = ({
   rank,
@@ -285,6 +285,14 @@ export const SkillTestDashboard: React.FC<SkillTestDashboardProps> = ({ initialD
     percentile: initialData.percentile || "30",
     correctAnswers: initialData.correctAnswers || "10 / 15",
   });
+  // const handleUpdate = (newData:  Partial<DashboardData>) => {
+  //   setData((prevData) => ({
+  //     ...prevData,
+  //     rank: newData.rank || prevData.rank,
+  //     percentile: newData.percentile || prevData.percentile,
+  //     correctAnswers: `${newData.currentScore || "10"} / 15`,
+  //   }));
+  // };
   const handleUpdate = (newData:  Partial<DashboardData>) => {
     setData((prevData) => ({
       ...prevData,
