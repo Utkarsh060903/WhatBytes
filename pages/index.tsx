@@ -10,10 +10,7 @@ interface SkillTestData {
 }
 
 const Home: FC = () => {
-  const { data, loading, error } = useSkillTestData();
-
-  // Error handling if fetching data fails
-  if (error) return <div>Error loading data. Please try again later.</div>;
+  const { data, loading } = useSkillTestData();
 
   // Show a loading message while the data is being fetched
   if (loading) return <div>Loading...</div>;
