@@ -10,12 +10,18 @@ interface SkillTestData {
 }
 
 const Home: FC = () => {
-  const { data, loading } = useSkillTestData();
+  const { data, loading, error } = useSkillTestData();
 
+  // Error handling if fetching data fails
+  if (error) return <div>Error loading data. Please try again later.</div>;
+
+  // Show a loading message while the data is being fetched
   if (loading) return <div>Loading...</div>;
 
+  // Render dashboard once the data is loaded
   return (
     <DashboardLayout>
+      {/* Ensure data is passed safely to the SkillTestDashboard */}
       <SkillTestDashboard initialData={data as SkillTestData} />
     </DashboardLayout>
   );

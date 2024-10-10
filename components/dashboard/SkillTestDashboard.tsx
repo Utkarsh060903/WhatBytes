@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trophy, Percent, CheckCircle2 } from "lucide-react";
+import { Trophy, Percent, CheckCircle2, TrendingUp } from "lucide-react";
 import {
   LineChart,
   Line,
@@ -15,7 +15,6 @@ import {
 } from "recharts";
 import UpdateScoresModal from "@/components/dashboard/UpdatedScoreModal";
 
-// Define interfaces for the component props and state
 interface QuickStatisticsProps {
   rank: string;
   percentile: string;
@@ -51,13 +50,11 @@ interface DashboardData {
   percentile: string;
   correctAnswers: string;
 }
-
-// QuickStatistics component
 const QuickStatistics: React.FC<QuickStatisticsProps> = ({
   rank,
   percentile,
   correctAnswers,
-}) => (
+}) =>(
   <Card className="mb-6">
     <CardContent className="p-4">
       <h3 className="font-bold mb-4">Quick Statistics</h3>
@@ -87,8 +84,6 @@ const QuickStatistics: React.FC<QuickStatisticsProps> = ({
     </CardContent>
   </Card>
 );
-
-// ComparisonGraph component
 const ComparisonGraph: React.FC<ComparisonGraphProps> = ({
   percentile,
   averagePercentile,
@@ -113,7 +108,7 @@ const ComparisonGraph: React.FC<ComparisonGraphProps> = ({
     label?: string;
   }
 
-  const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label }) => {
+   const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-white p-2 border border-gray-300 rounded shadow">
@@ -124,7 +119,6 @@ const ComparisonGraph: React.FC<ComparisonGraphProps> = ({
     }
     return null;
   };
-
   return (
     <Card className="mb-6 h-[443px]">
       <CardContent className="p-4">
@@ -151,11 +145,8 @@ const ComparisonGraph: React.FC<ComparisonGraphProps> = ({
                 stroke="#8884d8"
                 activeDot={{ r: 8 }}
               />
-              <Line
-                type="monotone"
-                dataKey="percentile"
-                stroke="transparent"
-              />
+              <Line type="monotone" dataKey="percentile" stroke="transparent" />
+              {/* Marker for user's percentile */}
               <Line
                 type="monotone"
                 data={[
@@ -170,6 +161,7 @@ const ComparisonGraph: React.FC<ComparisonGraphProps> = ({
                 strokeWidth={2}
                 dot={{ r: 6, fill: "#ff0000" }}
               />
+              {/* Marker for average percentile */}
               <Line
                 type="monotone"
                 data={[
@@ -191,8 +183,7 @@ const ComparisonGraph: React.FC<ComparisonGraphProps> = ({
     </Card>
   );
 };
-
-const SyllabusAnalysis: React.FC<SyllabusAnalysisProps> = ({ syllabusData }) => (
+const SyllabusAnalysis: React.FC<SyllabusAnalysisProps> = ({ syllabusData }) =>  (
   <Card className="mb-6 h-[350px]">
     <CardContent className="p-4">
       <h3 className="font-bold mb-4">Syllabus Wise Analysis</h3>
@@ -233,8 +224,7 @@ const SyllabusAnalysis: React.FC<SyllabusAnalysisProps> = ({ syllabusData }) => 
     </CardContent>
   </Card>
 );
-
-const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({ correctAnswers }) => {
+const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({ correctAnswers }) =>{
   const [correctCount, totalCount] = correctAnswers.split("/").map(Number);
   const percentage = (correctCount / totalCount) * 100;
   const data = [
@@ -242,7 +232,6 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({ correctAnswers }) =
     { name: "Incorrect", value: totalCount - correctCount },
   ];
   const COLORS = ["#3b82f6", "#e5e7eb"];
-
   return (
     <Card className="mt-6">
       <CardContent className="p-4">
@@ -289,15 +278,13 @@ const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({ correctAnswers }) =
     </Card>
   );
 };
-
 export const SkillTestDashboard: React.FC<SkillTestDashboardProps> = ({ initialData = {} }) => {
-  const [data, setData] = useState<DashboardData>({
+  const [data, setData] = useState({
     rank: initialData.rank || "1",
     percentile: initialData.percentile || "30",
     correctAnswers: initialData.correctAnswers || "10 / 15",
   });
-
-  const handleUpdate = (newData: Partial<DashboardData>) => {
+  const handleUpdate = (newData:  Partial<DashboardData>) => {
     setData((prevData) => ({
       ...prevData,
       rank: newData.rank || prevData.rank,
@@ -305,16 +292,14 @@ export const SkillTestDashboard: React.FC<SkillTestDashboardProps> = ({ initialD
       correctAnswers: `${newData.correctAnswers?.split('/')[0] || "10"} / 15`,
     }));
   };
-
   const syllabusData = [
     { name: "HTML Tools, Forms, History", percentage: 80 },
     { name: "Tags & References in HTML", percentage: 60 },
     { name: "Tables & References in HTML", percentage: 24 },
     { name: "Tables & CSS Basics", percentage: 96 },
   ];
-
   return (
-    <div className="p-4 sm:p-6 max-w-6xl mx-auto flex md:flex-row flex-col overflow-y">
+    <div className="p-4 sm:p-6 max-w-6xl mx-auto flex md:flex-row  flex-col overflow-y">
       <div className="flex-grow">
         <Card className="mb-6 w-[710px]">
           <CardHeader className="p-4">
@@ -336,7 +321,6 @@ export const SkillTestDashboard: React.FC<SkillTestDashboardProps> = ({ initialD
             </div>
           </CardHeader>
         </Card>
-
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 w-[710px]">
             <QuickStatistics
@@ -350,17 +334,17 @@ export const SkillTestDashboard: React.FC<SkillTestDashboardProps> = ({ initialD
             />
           </div>
         </div>
-      </div>
-      <div>
-        <div className="space-y-6">
-          <SyllabusAnalysis syllabusData={syllabusData} />
-          <QuestionAnalysis
-            correctAnswers={data.correctAnswers}
-          />
+        </div>
+        <div>
+          <div className="space-y-6">
+            <SyllabusAnalysis syllabusData={syllabusData} />
+            <QuestionAnalysis
+              correctAnswers={data.correctAnswers}
+              totalQuestions={15}
+            />
+          </div>
         </div>
       </div>
-    </div>
   );
 };
-
 export default SkillTestDashboard;
