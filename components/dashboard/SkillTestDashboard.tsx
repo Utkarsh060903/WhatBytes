@@ -36,7 +36,6 @@ interface SyllabusAnalysisProps {
 
 interface QuestionAnalysisProps {
   correctAnswers: string;
-  totalQuestions: number;
 }
 
 interface SkillTestDashboardProps {
@@ -108,7 +107,13 @@ const ComparisonGraph: React.FC<ComparisonGraphProps> = ({
     { percentile: 100, students: 2 },
   ];
 
-  const CustomTooltip: React.FC<any> = ({ active, payload, label }) => {
+  interface CustomTooltipProps {
+    active?: boolean;
+    payload?: Array<{ value: number }>;
+    label?: string;
+  }
+
+  const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-white p-2 border border-gray-300 rounded shadow">
@@ -229,7 +234,7 @@ const SyllabusAnalysis: React.FC<SyllabusAnalysisProps> = ({ syllabusData }) => 
   </Card>
 );
 
-const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({ correctAnswers, totalQuestions }) => {
+const QuestionAnalysis: React.FC<QuestionAnalysisProps> = ({ correctAnswers }) => {
   const [correctCount, totalCount] = correctAnswers.split("/").map(Number);
   const percentage = (correctCount / totalCount) * 100;
   const data = [
@@ -351,7 +356,6 @@ export const SkillTestDashboard: React.FC<SkillTestDashboardProps> = ({ initialD
           <SyllabusAnalysis syllabusData={syllabusData} />
           <QuestionAnalysis
             correctAnswers={data.correctAnswers}
-            totalQuestions={15}
           />
         </div>
       </div>
