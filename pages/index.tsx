@@ -10,13 +10,13 @@ interface SkillTestData {
 }
 
 const Home: FC = () => {
-  const { data, loading } = useSkillTestData<SkillTestData>();
+  const { data, loading } = useSkillTestData();
 
   if (loading) return <div>Loading...</div>;
 
   return (
     <DashboardLayout>
-      <SkillTestDashboard initialData={data} />
+      <SkillTestDashboard initialData={data as SkillTestData} />
     </DashboardLayout>
   );
 };
