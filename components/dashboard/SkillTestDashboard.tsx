@@ -49,6 +49,7 @@ interface DashboardData {
   rank: string;
   percentile: string;
   correctAnswers: string;
+  currentScore: number;
 }
 const QuickStatistics: React.FC<QuickStatisticsProps> = ({
   rank,
@@ -289,7 +290,7 @@ export const SkillTestDashboard: React.FC<SkillTestDashboardProps> = ({ initialD
       ...prevData,
       rank: newData.rank || prevData.rank,
       percentile: newData.percentile || prevData.percentile,
-      correctAnswers: `${newData.correctAnswers?.split('/')[0] || "10"} / 15`,
+      correctAnswers: `${newData.currentScore || "10"} / 15`,
     }));
   };
   const syllabusData = [
@@ -340,7 +341,6 @@ export const SkillTestDashboard: React.FC<SkillTestDashboardProps> = ({ initialD
             <SyllabusAnalysis syllabusData={syllabusData} />
             <QuestionAnalysis
               correctAnswers={data.correctAnswers}
-              totalQuestions={15}
             />
           </div>
         </div>
