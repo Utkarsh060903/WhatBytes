@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trophy, Percent, CheckCircle2, TrendingUp } from "lucide-react";
+import { Trophy, Percent, CheckCircle2} from "lucide-react";
 import {
   LineChart,
   Line,
